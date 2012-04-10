@@ -16,9 +16,9 @@
  */
 package core;
 
+import com.sun.lwuit.Component;
 import xml.XmlNode;
 import xml.SimpleParser;
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import javax.microedition.io.Connector;
@@ -121,5 +121,9 @@ public class DevHuru extends MIDlet {
 
     public void handleException(Exception e) {
         e.printStackTrace();
+    }
+
+    public Component interpret3ml(XmlNode threeml){
+        return null;
     }
 }

@@ -16,6 +16,7 @@
  */
 package test;
 
+import com.sun.lwuit.Component;
 import core.DevHuru;
 import xml.SimpleParser;
 import xml.XmlNode;
@@ -42,10 +43,11 @@ public class DevHuruTest {
         this.midlet=midlet;
         testURL="http://localhost/test.php";
         try{
-            ok("Test Send Simple Get 3ml Request",testSend3mlSimpleGetRequest());
-            ok("Test Send Simple Post 3ml Request",testSend3mlSimplePostRequest());
-            ok("Test Send Simple Post 3ml Request",testSend3mlGetWithParamRequest());
-            ok("Test Send Simple Post 3ml Request",testSend3mlPostWithParamRequest());
+            //ok("Test Send Simple Get 3ml Request",testSend3mlSimpleGetRequest());
+            //ok("Test Send Simple Post 3ml Request",testSend3mlSimplePostRequest());
+            //ok("Test Send Simple Post 3ml Request",testSend3mlGetWithParamRequest());
+            //ok("Test Send Simple Post 3ml Request",testSend3mlPostWithParamRequest());
+            ok("Test Build Threeml",testBuildThreeml());
         }
         catch(Exception e){
             midlet.handleException(e);
@@ -102,5 +104,17 @@ public class DevHuruTest {
         //System.out.println(threeml.toString());
         //System.out.println(actual3ml.toString());
         return threeml.toString().equals(actual3ml.toString());
+    }
+
+    private boolean testBuildThreeml() throws XmlPullParserException, IOException{
+        String actualthreeml="<?xml version=\"1.0\" encoding=\"utf-8\"?><threeml></threeml>";
+        ByteArrayInputStream bais=new ByteArrayInputStream(actualthreeml.getBytes());
+        SimpleParser simpleParser=new SimpleParser(bais);
+        XmlNode actual3ml=simpleParser.readXML(new KXmlParser());
+        Component c=midlet.interpret3ml(actual3ml);
+        if(c==null){
+            return false;
+        }
+        return true;
     }
 }
