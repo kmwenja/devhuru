@@ -17,6 +17,8 @@
 package core;
 
 import com.sun.lwuit.Component;
+import com.sun.lwuit.Container;
+import com.sun.lwuit.Display;
 import xml.XmlNode;
 import xml.SimpleParser;
 import java.io.DataOutputStream;
@@ -39,6 +41,7 @@ import test.DevHuruTest;
 public class DevHuru extends MIDlet {
 
     public DevHuru() {
+        Display.init(this);
         DevHuruTest devHuruTestor = new DevHuruTest(this);
     }
 
@@ -124,6 +127,11 @@ public class DevHuru extends MIDlet {
     }
 
     public Component interpret3ml(XmlNode threeml){
-        return null;
+        Component c=null;
+        if(threeml.nodeName.equalsIgnoreCase("threeml")){
+            Container root=new Container();
+            c=root;
+        }
+        return c;
     }
 }

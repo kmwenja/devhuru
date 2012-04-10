@@ -17,6 +17,7 @@
 package test;
 
 import com.sun.lwuit.Component;
+import com.sun.lwuit.Container;
 import core.DevHuru;
 import xml.SimpleParser;
 import xml.XmlNode;
@@ -111,10 +112,12 @@ public class DevHuruTest {
         ByteArrayInputStream bais=new ByteArrayInputStream(actualthreeml.getBytes());
         SimpleParser simpleParser=new SimpleParser(bais);
         XmlNode actual3ml=simpleParser.readXML(new KXmlParser());
+        Container actualContainer=new Container();
         Component c=midlet.interpret3ml(actual3ml);
         if(c==null){
             return false;
         }
-        return true;
+        Container testContainer=(Container)c;
+        return testContainer.toString().equals(actualContainer.toString());
     }
 }
