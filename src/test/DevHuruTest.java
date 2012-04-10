@@ -42,14 +42,18 @@ public class DevHuruTest {
         this.midlet=midlet;
         testURL="http://localhost/test.php";
         try{
-            System.out.println("Test Send Simple Get 3ml Request: "+(testSend3mlSimpleGetRequest()?"Success":"Failure"));
-            System.out.println("Test Send Simple Post 3ml Request: "+(testSend3mlSimplePostRequest()?"Success":"Failure"));
-            System.out.println("Test Send Simple Post 3ml Request: "+(testSend3mlGetWithParamRequest()?"Success":"Failure"));
-            System.out.println("Test Send Simple Post 3ml Request: "+(testSend3mlPostWithParamRequest()?"Success":"Failure"));
+            ok("Test Send Simple Get 3ml Request",testSend3mlSimpleGetRequest());
+            ok("Test Send Simple Post 3ml Request",testSend3mlSimplePostRequest());
+            ok("Test Send Simple Post 3ml Request",testSend3mlGetWithParamRequest());
+            ok("Test Send Simple Post 3ml Request",testSend3mlPostWithParamRequest());
         }
         catch(Exception e){
             midlet.handleException(e);
         }   
+    }
+
+    private void ok(String testDescription,boolean testResult){
+        System.out.println(testDescription+": "+(testResult?"Success":"Failure"));
     }
     
     private boolean testSend3mlSimpleGetRequest() throws XmlPullParserException, IOException{
