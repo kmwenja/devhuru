@@ -31,21 +31,12 @@ import java.util.Vector;
  *
  */
 public class XmlNode {
-    public static final byte TEXT_NODE=0;
-    public static final byte ELEMENT_NODE=1;
-
-    public byte nodeType;
     public String nodeName=null;
     public String nodeValue=null;
     public Hashtable attributes=new Hashtable();
     public Vector children=new Vector();
 
-    public XmlNode(){
-        this.nodeType=ELEMENT_NODE;
-    }
-
-    public XmlNode(byte type){
-        this.nodeType=type;
+    public XmlNode(){   
     }
 
     /**
