@@ -16,6 +16,8 @@
  */
 package core;
 
+import xml.XmlNode;
+import xml.SimpleParser;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;

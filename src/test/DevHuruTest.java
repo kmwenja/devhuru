@@ -17,8 +17,8 @@
 package test;
 
 import core.DevHuru;
-import core.SimpleParser;
-import core.XmlNode;
+import xml.SimpleParser;
+import xml.XmlNode;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import javax.microedition.io.HttpConnection;

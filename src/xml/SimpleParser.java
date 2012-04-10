@@ -15,7 +15,7 @@
  *  under the License.
  */
 
-package core;
+package xml;
 
 import java.io.IOException;
 import java.io.InputStream;
