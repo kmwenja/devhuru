@@ -18,6 +18,7 @@ package test;
 
 import com.sun.lwuit.Component;
 import com.sun.lwuit.Container;
+import com.sun.lwuit.Label;
 import core.DevHuru;
 import xml.SimpleParser;
 import xml.XmlNode;
@@ -49,6 +50,7 @@ public class DevHuruTest {
             //ok("Test Send Simple Post 3ml Request",testSend3mlGetWithParamRequest());
             //ok("Test Send Simple Post 3ml Request",testSend3mlPostWithParamRequest());
             ok("Test Build Threeml",testBuildThreeml());
+            ok("Test Build Label",testBuildLabel());
         }
         catch(Exception e){
             midlet.handleException(e);
@@ -113,6 +115,22 @@ public class DevHuruTest {
         SimpleParser simpleParser=new SimpleParser(bais);
         XmlNode actual3ml=simpleParser.readXML(new KXmlParser());
         Container actualContainer=new Container();
+        Component c=midlet.interpret3ml(actual3ml);
+        if(c==null){
+            return false;
+        }
+        Container testContainer=(Container)c;
+        return testContainer.toString().equals(actualContainer.toString());
+    }
+    
+    private boolean testBuildLabel() throws XmlPullParserException, IOException{
+        String actualthreeml="<?xml version=\"1.0\" encoding=\"utf-8\"?><threeml><label text=\"some stuff\"/></threeml>";
+        ByteArrayInputStream bais=new ByteArrayInputStream(actualthreeml.getBytes());
+        SimpleParser simpleParser=new SimpleParser(bais);
+        XmlNode actual3ml=simpleParser.readXML(new KXmlParser());
+        Container actualContainer=new Container();
+        Label l=new Label();
+        actualContainer.addComponent(l);
         Component c=midlet.interpret3ml(actual3ml);
         if(c==null){
             return false;
