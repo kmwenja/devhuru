@@ -78,7 +78,7 @@ public class DevHuruTest {
     
     private boolean testSend3mlGetWithParamRequest() throws XmlPullParserException, IOException{
         boolean result=false;
-        String actualthreeml="<?xml version=\"1.0\" encoding=\"utf-8\"?><data><id>0</id><name>kesha blow me</name></data>";
+        String actualthreeml="<?xml version=\"1.0\" encoding=\"utf-8\"?><threeml><id>0</id><name>kesha blow me</name></threeml>";
         ByteArrayInputStream bais=new ByteArrayInputStream(actualthreeml.getBytes());
         SimpleParser simpleParser=new SimpleParser(bais);
         XmlNode actual3ml=simpleParser.readXML(new KXmlParser());
@@ -90,7 +90,7 @@ public class DevHuruTest {
     
     private boolean testSend3mlPostWithParamRequest() throws XmlPullParserException, IOException{
         boolean result=false;
-        String actualthreeml="<?xml version=\"1.0\" encoding=\"utf-8\"?><data><id>0</id><name>kesha blow me</name></data>";
+        String actualthreeml="<?xml version=\"1.0\" encoding=\"utf-8\"?><threeml><id>0</id><name>kesha blow me</name></threeml>";
         ByteArrayInputStream bais=new ByteArrayInputStream(actualthreeml.getBytes());
         SimpleParser simpleParser=new SimpleParser(bais);
         XmlNode actual3ml=simpleParser.readXML(new KXmlParser());
