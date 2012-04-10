@@ -130,7 +130,9 @@ public class DevHuru extends MIDlet {
     public Component interpret3ml(XmlNode threeml){
         Component c=null;
         if(threeml.nodeName.equalsIgnoreCase("threeml")){
+            //by default the whole UI is in a parent Container
             Container root=new Container();
+            //iterate through the children and add their UI to the Container
             int childCount=threeml.children.size();
             for(int i=0;i<childCount;i++){
                 root.addComponent(interpret3ml((XmlNode)threeml.children.elementAt(i)));
@@ -139,6 +141,10 @@ public class DevHuru extends MIDlet {
         }
         if(threeml.nodeName.equalsIgnoreCase("label")){
             Label l=new Label();
+            //set the label's text
+            if(threeml.attributes.contains("text")){
+                l.setText(threeml.getAttr("text"));
+            }
             c=l;
         }
         return c;

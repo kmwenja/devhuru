@@ -130,6 +130,7 @@ public class DevHuruTest {
         XmlNode actual3ml=simpleParser.readXML(new KXmlParser());
         Container actualContainer=new Container();
         Label l=new Label();
+        l.setText("some stuff");
         actualContainer.addComponent(l);
         Component c=midlet.interpret3ml(actual3ml);
         if(c==null){
