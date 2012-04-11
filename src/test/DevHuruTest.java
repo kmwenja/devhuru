@@ -27,6 +27,7 @@ import com.sun.lwuit.RadioButton;
 import com.sun.lwuit.TextArea;
 import com.sun.lwuit.TextField;
 import com.sun.lwuit.layouts.BorderLayout;
+import com.sun.lwuit.layouts.BoxLayout;
 import core.DevHuru;
 import xml.SimpleParser;
 import xml.XmlNode;
@@ -67,6 +68,7 @@ public class DevHuruTest {
             ok("Test Build ComboBox", testBuildComboBox());
             ok("Test Build RadioButton", testBuildRadioButton());
             ok("Test Build BorderLayout", testBuildBorderLayout());
+            ok("Test Build BoxLayout",testBuildBoxLayout());
         } catch (Exception e) {
             midlet.handleException(e);
         }
@@ -267,12 +269,34 @@ public class DevHuruTest {
         SimpleParser simpleParser = new SimpleParser(bais);
         XmlNode actual3ml = simpleParser.readXML(new KXmlParser());
         Container actualContainer = new Container();
-        Container actualBorder=new Container();
+        Container actualBorder = new Container();
         actualBorder.setLayout(new BorderLayout());
         Label l = new Label();
         l.setText("some stuff");
 
         actualBorder.addComponent(BorderLayout.NORTH, l);
+        actualContainer.addComponent(actualBorder);
+        Component c = midlet.interpret3ml(actual3ml);
+        if (c == null) {
+            return false;
+        }
+        Container testContainer = (Container) c;
+
+        return getContainerString(testContainer).equals(getContainerString(actualContainer));
+    }
+
+    private boolean testBuildBoxLayout() throws XmlPullParserException, IOException {
+        String actualthreeml = "<?xml version=\"1.0\" encoding=\"utf-8\"?><threeml><boxlayout><label text=\"some stuff\"/></boxlayout></threeml>";
+        ByteArrayInputStream bais = new ByteArrayInputStream(actualthreeml.getBytes());
+        SimpleParser simpleParser = new SimpleParser(bais);
+        XmlNode actual3ml = simpleParser.readXML(new KXmlParser());
+        Container actualContainer = new Container();
+        Container actualBorder = new Container();
+        actualBorder.setLayout(new BoxLayout(BoxLayout.Y_AXIS));
+        Label l = new Label();
+        l.setText("some stuff");
+
+        actualBorder.addComponent(l);
         actualContainer.addComponent(actualBorder);
         Component c = midlet.interpret3ml(actual3ml);
         if (c == null) {

@@ -27,6 +27,7 @@ import com.sun.lwuit.RadioButton;
 import com.sun.lwuit.TextArea;
 import com.sun.lwuit.TextField;
 import com.sun.lwuit.layouts.BorderLayout;
+import com.sun.lwuit.layouts.BoxLayout;
 import xml.XmlNode;
 import xml.SimpleParser;
 import java.io.DataOutputStream;
@@ -134,164 +135,180 @@ public class DevHuru extends MIDlet {
         e.printStackTrace();
     }
 
-    public Component interpret3ml(XmlNode threeml){
-        Component c=null;
-        if(threeml.nodeName.equalsIgnoreCase("threeml")){
+    public Component interpret3ml(XmlNode threeml) {
+        Component c = null;
+        if (threeml.nodeName.equalsIgnoreCase("threeml")) {
             //by default the whole UI is in a parent Container
-            Container root=new Container();
+            Container root = new Container();
             //iterate through the children and add their UI to the Container
-            int childCount=threeml.children.size();
-            for(int i=0;i<childCount;i++){
-                root.addComponent(interpret3ml((XmlNode)threeml.children.elementAt(i)));
+            int childCount = threeml.children.size();
+            for (int i = 0; i < childCount; i++) {
+                root.addComponent(interpret3ml((XmlNode) threeml.children.elementAt(i)));
             }
-            c=root;
+            c = root;
         }
-        if(threeml.nodeName.equalsIgnoreCase("label")){
-            Label l=new Label();
-            
+        if (threeml.nodeName.equalsIgnoreCase("label")) {
+            Label l = new Label();
+
             //TODO: set the label's name
             //TODO: set the label's icon
-            
+
             //set the label's text
-            if(threeml.attributes.containsKey("text")){
-                String text=threeml.getAttr("text");
+            if (threeml.attributes.containsKey("text")) {
+                String text = threeml.getAttr("text");
                 l.setText(text);
             }
-            c=l;
+            c = l;
         }
-        if(threeml.nodeName.equalsIgnoreCase("textfield")){
-            TextField l=new TextField();
-            
+        if (threeml.nodeName.equalsIgnoreCase("textfield")) {
+            TextField l = new TextField();
+
             //TODO: set the textfield's name
             //TODO: set the textfield's input constraints
-            
+
             //set the textfield's text
-            if(threeml.attributes.containsKey("text")){
+            if (threeml.attributes.containsKey("text")) {
                 l.setText(threeml.getAttr("text"));
             }
-            c=l;
+            c = l;
         }
-        if(threeml.nodeName.equalsIgnoreCase("textarea")){
-            TextArea l=new TextArea();
-            
+        if (threeml.nodeName.equalsIgnoreCase("textarea")) {
+            TextArea l = new TextArea();
+
             //TODO: set the textarea's name
             //TODO: set the textarea's input constraints
-            
+
             //set the textarea's text
-            StringBuffer text=new StringBuffer();
+            StringBuffer text = new StringBuffer();
             text.append(threeml.nodeValue);
-            int childCount=threeml.children.size();
-            for(int i=0;i<childCount;i++){
-                text.append((String)threeml.children.elementAt(i).toString());
+            int childCount = threeml.children.size();
+            for (int i = 0; i < childCount; i++) {
+                text.append((String) threeml.children.elementAt(i).toString());
             }
             l.setText(text.toString());
-            
-            c=l;
+
+            c = l;
         }
-        if(threeml.nodeName.equalsIgnoreCase("button")){
-            Button l=new Button();
-            
+        if (threeml.nodeName.equalsIgnoreCase("button")) {
+            Button l = new Button();
+
             //TODO: set the button's name
             //TODO: set the button's icon
-            
+
             //set the button's text
-            if(threeml.attributes.containsKey("text")){
+            if (threeml.attributes.containsKey("text")) {
                 l.setText(threeml.getAttr("text"));
             }
-            
-            c=l;
+
+            c = l;
         }
-        if(threeml.nodeName.equalsIgnoreCase("checkbox")){
-            CheckBox l=new CheckBox();
-            
+        if (threeml.nodeName.equalsIgnoreCase("checkbox")) {
+            CheckBox l = new CheckBox();
+
             //TODO: set the checkbox's name
             //TODO: set the checkbox's icon
-            
+
             //set the checkbox's text
-            if(threeml.attributes.containsKey("text")){
+            if (threeml.attributes.containsKey("text")) {
                 l.setText(threeml.getAttr("text"));
             }
-            
-            c=l;
+
+            c = l;
         }
-        if(threeml.nodeName.equalsIgnoreCase("combobox")){
-            ComboBox l=new ComboBox();
-            
+        if (threeml.nodeName.equalsIgnoreCase("combobox")) {
+            ComboBox l = new ComboBox();
+
             //TODO: set the combobox's name
-            
+
             //add items to the combobox
-            int childCount=threeml.children.size();
-            for(int i=0;i<childCount;i++){
-                XmlNode item=(XmlNode)threeml.children.elementAt(i);
-                if(item.nodeName.equalsIgnoreCase("item")){
-                    l.addItem((String)item.nodeValue);
+            int childCount = threeml.children.size();
+            for (int i = 0; i < childCount; i++) {
+                XmlNode item = (XmlNode) threeml.children.elementAt(i);
+                if (item.nodeName.equalsIgnoreCase("item")) {
+                    l.addItem((String) item.nodeValue);
                 }
             }
-            
-            c=l;
+
+            c = l;
         }
-        if(threeml.nodeName.equalsIgnoreCase("radiobutton")){
-            RadioButton l=new RadioButton();
-            
+        if (threeml.nodeName.equalsIgnoreCase("radiobutton")) {
+            RadioButton l = new RadioButton();
+
             //TODO: set the radiobutton's name
             //TODO: set the radiobutton's icon
-            
+
             //set the radiobutton's text
-            if(threeml.attributes.containsKey("text")){
+            if (threeml.attributes.containsKey("text")) {
                 l.setText(threeml.getAttr("text"));
             }
-            
-            c=l;
+
+            c = l;
         }
-        if(threeml.nodeName.equalsIgnoreCase("borderlayout")){
-            Container borderContainer=new Container();
-            BorderLayout b=new BorderLayout();
-            
+        if (threeml.nodeName.equalsIgnoreCase("borderlayout")) {
+            Container borderContainer = new Container();
+            BorderLayout b = new BorderLayout();
+
             borderContainer.setLayout(b);
-            
+
             //TODO: set the borderlayout's center behaviour
-            
-            int childCount=threeml.children.size();
-            for(int i=0;i<childCount;i++){
-                XmlNode child=(XmlNode)threeml.children.elementAt(i);
-                if(child.nodeName.equalsIgnoreCase("north")){
-                    int count=child.children.size();
-                    for(int j=0;j<count;j++){
-                        Component childCo=interpret3ml((XmlNode)child.children.elementAt(i));
+
+            int childCount = threeml.children.size();
+            for (int i = 0; i < childCount; i++) {
+                XmlNode child = (XmlNode) threeml.children.elementAt(i);
+                if (child.nodeName.equalsIgnoreCase("north")) {
+                    int count = child.children.size();
+                    for (int j = 0; j < count; j++) {
+                        Component childCo = interpret3ml((XmlNode) child.children.elementAt(i));
                         borderContainer.addComponent(BorderLayout.NORTH, childCo);
                     }
                 }
-                if(child.nodeName.equalsIgnoreCase("east")){
-                    int count=child.children.size();
-                    for(int j=0;j<count;j++){
-                        Component childCo=interpret3ml((XmlNode)child.children.elementAt(i));
+                if (child.nodeName.equalsIgnoreCase("east")) {
+                    int count = child.children.size();
+                    for (int j = 0; j < count; j++) {
+                        Component childCo = interpret3ml((XmlNode) child.children.elementAt(i));
                         borderContainer.addComponent(BorderLayout.EAST, childCo);
                     }
                 }
-                if(child.nodeName.equalsIgnoreCase("west")){
-                    int count=child.children.size();
-                    for(int j=0;j<count;j++){
-                        Component childCo=interpret3ml((XmlNode)child.children.elementAt(i));
+                if (child.nodeName.equalsIgnoreCase("west")) {
+                    int count = child.children.size();
+                    for (int j = 0; j < count; j++) {
+                        Component childCo = interpret3ml((XmlNode) child.children.elementAt(i));
                         borderContainer.addComponent(BorderLayout.WEST, childCo);
                     }
                 }
-                if(child.nodeName.equalsIgnoreCase("south")){
-                    int count=child.children.size();
-                    for(int j=0;j<count;j++){
-                        Component childCo=interpret3ml((XmlNode)child.children.elementAt(i));
+                if (child.nodeName.equalsIgnoreCase("south")) {
+                    int count = child.children.size();
+                    for (int j = 0; j < count; j++) {
+                        Component childCo = interpret3ml((XmlNode) child.children.elementAt(i));
                         borderContainer.addComponent(BorderLayout.SOUTH, childCo);
                     }
                 }
-                if(child.nodeName.equalsIgnoreCase("center")){
-                    int count=child.children.size();
-                    for(int j=0;j<count;j++){
-                        Component childCo=interpret3ml((XmlNode)child.children.elementAt(i));
+                if (child.nodeName.equalsIgnoreCase("center")) {
+                    int count = child.children.size();
+                    for (int j = 0; j < count; j++) {
+                        Component childCo = interpret3ml((XmlNode) child.children.elementAt(i));
                         borderContainer.addComponent(BorderLayout.CENTER, childCo);
                     }
                 }
             }
-            
-            c=borderContainer;
+
+            c = borderContainer;
+        }
+        if (threeml.nodeName.equalsIgnoreCase("boxlayout")) {
+            Container boxContainer = new Container();
+            BoxLayout b = new BoxLayout(BoxLayout.Y_AXIS);
+
+            boxContainer.setLayout(b);
+
+            //TODO: set the boxlayout's orientation
+
+            int childCount = threeml.children.size();
+            for (int i = 0; i < childCount; i++) {
+                XmlNode child = (XmlNode) threeml.children.elementAt(i);
+                boxContainer.addComponent(interpret3ml((XmlNode) child));
+            }
+
+            c = boxContainer;
         }
         return c;
     }
