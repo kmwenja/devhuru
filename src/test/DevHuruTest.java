@@ -19,6 +19,7 @@ package test;
 import com.sun.lwuit.Component;
 import com.sun.lwuit.Container;
 import com.sun.lwuit.Label;
+import com.sun.lwuit.TextArea;
 import com.sun.lwuit.TextField;
 import core.DevHuru;
 import xml.SimpleParser;
@@ -53,6 +54,7 @@ public class DevHuruTest {
             ok("Test Build Threeml",testBuildThreeml());
             ok("Test Build Label",testBuildLabel());
             ok("Test Build TextField",testBuildTextField());
+            ok("Test Build TextArea",testBuildTextArea());
         }
         catch(Exception e){
             midlet.handleException(e);
@@ -149,6 +151,23 @@ public class DevHuruTest {
         XmlNode actual3ml=simpleParser.readXML(new KXmlParser());
         Container actualContainer=new Container();
         TextField l=new TextField();
+        l.setText("some stuff");
+        actualContainer.addComponent(l);
+        Component c=midlet.interpret3ml(actual3ml);
+        if(c==null){
+            return false;
+        }
+        Container testContainer=(Container)c;
+        return testContainer.toString().equals(actualContainer.toString());
+    }
+    
+    private boolean testBuildTextArea() throws XmlPullParserException, IOException{
+        String actualthreeml="<?xml version=\"1.0\" encoding=\"utf-8\"?><threeml><textarea>some stuff</textarea></threeml>";
+        ByteArrayInputStream bais=new ByteArrayInputStream(actualthreeml.getBytes());
+        SimpleParser simpleParser=new SimpleParser(bais);
+        XmlNode actual3ml=simpleParser.readXML(new KXmlParser());
+        Container actualContainer=new Container();
+        TextArea l=new TextArea();
         l.setText("some stuff");
         actualContainer.addComponent(l);
         Component c=midlet.interpret3ml(actual3ml);
