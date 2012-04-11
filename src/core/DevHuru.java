@@ -20,6 +20,7 @@ import com.sun.lwuit.Component;
 import com.sun.lwuit.Container;
 import com.sun.lwuit.Display;
 import com.sun.lwuit.Label;
+import com.sun.lwuit.TextField;
 import xml.XmlNode;
 import xml.SimpleParser;
 import java.io.DataOutputStream;
@@ -141,6 +142,14 @@ public class DevHuru extends MIDlet {
         }
         if(threeml.nodeName.equalsIgnoreCase("label")){
             Label l=new Label();
+            //set the label's text
+            if(threeml.attributes.contains("text")){
+                l.setText(threeml.getAttr("text"));
+            }
+            c=l;
+        }
+        if(threeml.nodeName.equalsIgnoreCase("textfield")){
+            TextField l=new TextField();
             //set the label's text
             if(threeml.attributes.contains("text")){
                 l.setText(threeml.getAttr("text"));
