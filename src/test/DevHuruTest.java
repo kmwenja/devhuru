@@ -16,9 +16,14 @@
  */
 package test;
 
+import com.sun.lwuit.Button;
+import com.sun.lwuit.ButtonGroup;
+import com.sun.lwuit.CheckBox;
+import com.sun.lwuit.ComboBox;
 import com.sun.lwuit.Component;
 import com.sun.lwuit.Container;
 import com.sun.lwuit.Label;
+import com.sun.lwuit.RadioButton;
 import com.sun.lwuit.TextArea;
 import com.sun.lwuit.TextField;
 import core.DevHuru;
@@ -55,6 +60,10 @@ public class DevHuruTest {
             ok("Test Build Label",testBuildLabel());
             ok("Test Build TextField",testBuildTextField());
             ok("Test Build TextArea",testBuildTextArea());
+            ok("Test Build Button",testBuildButton());
+            ok("Test Build CheckBox",testBuildCheckBox());
+            ok("Test Build ComboBox",testBuildComboBox());
+            ok("Test Build RadioButton",testBuildRadioButton());
         }
         catch(Exception e){
             midlet.handleException(e);
@@ -170,6 +179,76 @@ public class DevHuruTest {
         TextArea l=new TextArea();
         l.setText("some stuff");
         actualContainer.addComponent(l);
+        Component c=midlet.interpret3ml(actual3ml);
+        if(c==null){
+            return false;
+        }
+        Container testContainer=(Container)c;
+        return testContainer.toString().equals(actualContainer.toString());
+    }
+    
+    private boolean testBuildButton() throws XmlPullParserException, IOException{
+        String actualthreeml="<?xml version=\"1.0\" encoding=\"utf-8\"?><threeml><button text=\"some stuff\"/></threeml>";
+        ByteArrayInputStream bais=new ByteArrayInputStream(actualthreeml.getBytes());
+        SimpleParser simpleParser=new SimpleParser(bais);
+        XmlNode actual3ml=simpleParser.readXML(new KXmlParser());
+        Container actualContainer=new Container();
+        Button l=new Button();
+        l.setText("some stuff");
+        actualContainer.addComponent(l);
+        Component c=midlet.interpret3ml(actual3ml);
+        if(c==null){
+            return false;
+        }
+        Container testContainer=(Container)c;
+        return testContainer.toString().equals(actualContainer.toString());
+    }
+    
+    private boolean testBuildCheckBox() throws XmlPullParserException, IOException{
+        String actualthreeml="<?xml version=\"1.0\" encoding=\"utf-8\"?><threeml><checkbox text=\"some stuff\"/></threeml>";
+        ByteArrayInputStream bais=new ByteArrayInputStream(actualthreeml.getBytes());
+        SimpleParser simpleParser=new SimpleParser(bais);
+        XmlNode actual3ml=simpleParser.readXML(new KXmlParser());
+        Container actualContainer=new Container();
+        CheckBox l=new CheckBox();
+        l.setText("some stuff");
+        actualContainer.addComponent(l);
+        Component c=midlet.interpret3ml(actual3ml);
+        if(c==null){
+            return false;
+        }
+        Container testContainer=(Container)c;
+        return testContainer.toString().equals(actualContainer.toString());
+    }
+
+    private boolean testBuildComboBox() throws XmlPullParserException, IOException{
+        String actualthreeml="<?xml version=\"1.0\" encoding=\"utf-8\"?><threeml><combobox><item>One</item><item>Two</item></combobox></threeml>";
+        ByteArrayInputStream bais=new ByteArrayInputStream(actualthreeml.getBytes());
+        SimpleParser simpleParser=new SimpleParser(bais);
+        XmlNode actual3ml=simpleParser.readXML(new KXmlParser());
+        Container actualContainer=new Container();
+        ComboBox l=new ComboBox();
+        l.addItem("One");
+        l.addItem("Two");
+        actualContainer.addComponent(l);
+        Component c=midlet.interpret3ml(actual3ml);
+        if(c==null){
+            return false;
+        }
+        Container testContainer=(Container)c;
+        return testContainer.toString().equals(actualContainer.toString());
+    }
+    
+    private boolean testBuildRadioButton() throws XmlPullParserException, IOException{
+        String actualthreeml="<?xml version=\"1.0\" encoding=\"utf-8\"?><threeml><radiobutton text=\"some stuff\"/></threeml>";
+        ByteArrayInputStream bais=new ByteArrayInputStream(actualthreeml.getBytes());
+        SimpleParser simpleParser=new SimpleParser(bais);
+        XmlNode actual3ml=simpleParser.readXML(new KXmlParser());
+        Container actualContainer=new Container();
+        RadioButton r=new RadioButton();
+        r.setText("some stuff");
+        
+        actualContainer.addComponent(r);
         Component c=midlet.interpret3ml(actual3ml);
         if(c==null){
             return false;

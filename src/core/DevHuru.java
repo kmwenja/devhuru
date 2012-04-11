@@ -16,10 +16,14 @@
  */
 package core;
 
+import com.sun.lwuit.Button;
+import com.sun.lwuit.CheckBox;
+import com.sun.lwuit.ComboBox;
 import com.sun.lwuit.Component;
 import com.sun.lwuit.Container;
 import com.sun.lwuit.Display;
 import com.sun.lwuit.Label;
+import com.sun.lwuit.RadioButton;
 import com.sun.lwuit.TextArea;
 import com.sun.lwuit.TextField;
 import xml.XmlNode;
@@ -168,6 +172,50 @@ public class DevHuru extends MIDlet {
                 text.append((String)threeml.children.elementAt(i).toString());
             }
             l.setText(text.toString());
+            
+            c=l;
+        }
+        if(threeml.nodeName.equalsIgnoreCase("button")){
+            Button l=new Button();
+            
+            //set the button's text
+            if(threeml.attributes.contains("text")){
+                l.setText(threeml.getAttr("text"));
+            }
+            
+            c=l;
+        }
+        if(threeml.nodeName.equalsIgnoreCase("checkbox")){
+            CheckBox l=new CheckBox();
+            
+            //set the checkbox's text
+            if(threeml.attributes.contains("text")){
+                l.setText(threeml.getAttr("text"));
+            }
+            
+            c=l;
+        }
+        if(threeml.nodeName.equalsIgnoreCase("combobox")){
+            ComboBox l=new ComboBox();
+            
+            //add items to the combobox
+            int childCount=threeml.children.size();
+            for(int i=0;i<childCount;i++){
+                XmlNode item=(XmlNode)threeml.children.elementAt(i);
+                if(item.nodeName.equalsIgnoreCase("item")){
+                    l.addItem((String)item.nodeValue);
+                }
+            }
+            
+            c=l;
+        }
+        if(threeml.nodeName.equalsIgnoreCase("radiobutton")){
+            RadioButton l=new RadioButton();
+            
+            //set the checkbox's text
+            if(threeml.attributes.contains("text")){
+                l.setText(threeml.getAttr("text"));
+            }
             
             c=l;
         }
