@@ -146,6 +146,197 @@ public class DevHuru extends MIDlet {
         frmResult.show();
     }
 
+    
+    public Component processBody(XmlNode bodyML){
+        Component c=null;
+        if (bodyML.nodeName.equalsIgnoreCase("label")) {
+            Label l = new Label();
+
+            //TODO: set the label's name
+            //TODO: set the label's icon
+
+            //set the label's text
+            if (bodyML.attributes.containsKey("text")) {
+                String text = bodyML.getAttr("text");
+                l.setText(text);
+            }
+            c = l;
+        }
+        if (bodyML.nodeName.equalsIgnoreCase("textfield")) {
+            TextField l = new TextField();
+
+            //TODO: set the textfield's name
+            //TODO: set the textfield's input constraints
+
+            //set the textfield's text
+            if (bodyML.attributes.containsKey("text")) {
+                l.setText(bodyML.getAttr("text"));
+            }
+            c = l;
+        }
+        if (bodyML.nodeName.equalsIgnoreCase("textarea")) {
+            TextArea l = new TextArea();
+
+            //TODO: set the textarea's name
+            //TODO: set the textarea's input constraints
+
+            //set the textarea's text
+            StringBuffer text = new StringBuffer();
+            text.append(bodyML.nodeValue);
+            int childCount = bodyML.children.size();
+            for (int i = 0; i < childCount; i++) {
+                text.append((String) bodyML.children.elementAt(i).toString());
+            }
+            l.setText(text.toString());
+
+            c = l;
+        }
+        if (bodyML.nodeName.equalsIgnoreCase("button")) {
+            Button l = new Button();
+
+            //TODO: set the button's name
+            //TODO: set the button's icon
+
+            //set the button's text
+            if (bodyML.attributes.containsKey("text")) {
+                l.setText(bodyML.getAttr("text"));
+            }
+
+            c = l;
+        }
+        if (bodyML.nodeName.equalsIgnoreCase("checkbox")) {
+            CheckBox l = new CheckBox();
+
+            //TODO: set the checkbox's name
+            //TODO: set the checkbox's icon
+
+            //set the checkbox's text
+            if (bodyML.attributes.containsKey("text")) {
+                l.setText(bodyML.getAttr("text"));
+            }
+
+            c = l;
+        }
+        if (bodyML.nodeName.equalsIgnoreCase("combobox")) {
+            ComboBox l = new ComboBox();
+
+            //TODO: set the combobox's name
+
+            //add items to the combobox
+            int childCount = bodyML.children.size();
+            for (int i = 0; i < childCount; i++) {
+                XmlNode item = (XmlNode) bodyML.children.elementAt(i);
+                if (item.nodeName.equalsIgnoreCase("item")) {
+                    l.addItem((String) item.nodeValue);
+                }
+            }
+
+            c = l;
+        }
+        if (bodyML.nodeName.equalsIgnoreCase("radiobutton")) {
+            RadioButton l = new RadioButton();
+
+            //TODO: set the radiobutton's name
+            //TODO: set the radiobutton's icon
+
+            //set the radiobutton's text
+            if (bodyML.attributes.containsKey("text")) {
+                l.setText(bodyML.getAttr("text"));
+            }
+
+            c = l;
+        }
+        if (bodyML.nodeName.equalsIgnoreCase("borderlayout")) {
+            Container borderContainer = new Container();
+            BorderLayout b = new BorderLayout();
+
+            borderContainer.setLayout(b);
+
+            //TODO: set the borderlayout's center behaviour
+
+            int childCount = bodyML.children.size();
+            for (int i = 0; i < childCount; i++) {
+                XmlNode child = (XmlNode) bodyML.children.elementAt(i);
+                if (child.nodeName.equalsIgnoreCase("north")) {
+                    int count = child.children.size();
+                    for (int j = 0; j < count; j++) {
+                        Component childCo = processBody((XmlNode) child.children.elementAt(j));
+                        borderContainer.addComponent(BorderLayout.NORTH, childCo);
+                    }
+                }
+                if (child.nodeName.equalsIgnoreCase("east")) {
+                    int count = child.children.size();
+                    for (int j = 0; j < count; j++) {
+                        Component childCo = processBody((XmlNode) child.children.elementAt(j));
+                        borderContainer.addComponent(BorderLayout.EAST, childCo);
+                    }
+                }
+                if (child.nodeName.equalsIgnoreCase("west")) {
+                    int count = child.children.size();
+                    for (int j = 0; j < count; j++) {
+                        Component childCo = processBody((XmlNode) child.children.elementAt(j));
+                        borderContainer.addComponent(BorderLayout.WEST, childCo);
+                    }
+                }
+                if (child.nodeName.equalsIgnoreCase("south")) {
+                    int count = child.children.size();
+                    for (int j = 0; j < count; j++) {
+                        Component childCo = processBody((XmlNode) child.children.elementAt(j));
+                        borderContainer.addComponent(BorderLayout.SOUTH, childCo);
+                    }
+                }
+                if (child.nodeName.equalsIgnoreCase("center")) {
+                    int count = child.children.size();
+                    for (int j = 0; j < count; j++) {
+                        Component childCo = processBody((XmlNode) child.children.elementAt(j));
+                        borderContainer.addComponent(BorderLayout.CENTER, childCo);
+                    }
+                }
+            }
+
+            c = borderContainer;
+        }
+        if (bodyML.nodeName.equalsIgnoreCase("boxlayout")) {
+            Container boxContainer = new Container();
+            BoxLayout b = new BoxLayout(BoxLayout.Y_AXIS);
+
+            boxContainer.setLayout(b);
+
+            //set the boxlayout's orientation
+            if(bodyML.attributes.containsKey("align")){
+                String orient=bodyML.getAttr("align");
+                if(orient.equalsIgnoreCase("x-axis")){
+                    boxContainer.setLayout(new BoxLayout(BoxLayout.X_AXIS));
+                }
+            }
+
+            int childCount = bodyML.children.size();
+            for (int i = 0; i < childCount; i++) {
+                XmlNode child = (XmlNode) bodyML.children.elementAt(i);
+                boxContainer.addComponent(processBody((XmlNode) child));
+            }
+
+            c = boxContainer;
+        }
+        if (bodyML.nodeName.equalsIgnoreCase("flowlayout")) {
+            Container flowContainer = new Container();
+            FlowLayout f = new FlowLayout();
+
+            flowContainer.setLayout(f);
+
+            //TODO: set the flowlayout's orientation
+
+            int childCount = bodyML.children.size();
+            for (int i = 0; i < childCount; i++) {
+                XmlNode child = (XmlNode) bodyML.children.elementAt(i);
+                flowContainer.addComponent(processBody((XmlNode) child));
+            }
+
+            c = flowContainer;
+        }
+        return c;
+    }
+    
     public Component interpret3ml(XmlNode threeml) {
         Component c = null;
         if (threeml.nodeName.equalsIgnoreCase("threeml")) {
@@ -154,195 +345,33 @@ public class DevHuru extends MIDlet {
             //iterate through the children and add their UI to the Container
             int childCount = threeml.children.size();
             for (int i = 0; i < childCount; i++) {
-                root.addComponent(BorderLayout.CENTER,interpret3ml((XmlNode) threeml.children.elementAt(i)));
+                XmlNode child=(XmlNode) threeml.children.elementAt(i);
+                if(child.nodeName.equalsIgnoreCase("body")){
+                    int grandChildrenCount=child.children.size();
+                    for(int j=0;j<grandChildrenCount;j++){
+                       XmlNode grandChild=(XmlNode)child.children.elementAt(j);
+                       root.addComponent(BorderLayout.CENTER,processBody(grandChild));
+                    }
+                }
+                if(child.nodeName.equalsIgnoreCase("head")){
+                    processHead(child);
+                }
+                else{
+                    //if no head or body, assume body code
+                    int grandChildrenCount=child.children.size();
+                    for(int j=0;j<grandChildrenCount;j++){
+                       XmlNode grandChild=(XmlNode)child.children.elementAt(j);
+                       root.addComponent(BorderLayout.CENTER,processBody(grandChild));
+                    }
+                }
+                
             }
             c = root;
         }
-        if (threeml.nodeName.equalsIgnoreCase("label")) {
-            Label l = new Label();
-
-            //TODO: set the label's name
-            //TODO: set the label's icon
-
-            //set the label's text
-            if (threeml.attributes.containsKey("text")) {
-                String text = threeml.getAttr("text");
-                l.setText(text);
-            }
-            c = l;
-        }
-        if (threeml.nodeName.equalsIgnoreCase("textfield")) {
-            TextField l = new TextField();
-
-            //TODO: set the textfield's name
-            //TODO: set the textfield's input constraints
-
-            //set the textfield's text
-            if (threeml.attributes.containsKey("text")) {
-                l.setText(threeml.getAttr("text"));
-            }
-            c = l;
-        }
-        if (threeml.nodeName.equalsIgnoreCase("textarea")) {
-            TextArea l = new TextArea();
-
-            //TODO: set the textarea's name
-            //TODO: set the textarea's input constraints
-
-            //set the textarea's text
-            StringBuffer text = new StringBuffer();
-            text.append(threeml.nodeValue);
-            int childCount = threeml.children.size();
-            for (int i = 0; i < childCount; i++) {
-                text.append((String) threeml.children.elementAt(i).toString());
-            }
-            l.setText(text.toString());
-
-            c = l;
-        }
-        if (threeml.nodeName.equalsIgnoreCase("button")) {
-            Button l = new Button();
-
-            //TODO: set the button's name
-            //TODO: set the button's icon
-
-            //set the button's text
-            if (threeml.attributes.containsKey("text")) {
-                l.setText(threeml.getAttr("text"));
-            }
-
-            c = l;
-        }
-        if (threeml.nodeName.equalsIgnoreCase("checkbox")) {
-            CheckBox l = new CheckBox();
-
-            //TODO: set the checkbox's name
-            //TODO: set the checkbox's icon
-
-            //set the checkbox's text
-            if (threeml.attributes.containsKey("text")) {
-                l.setText(threeml.getAttr("text"));
-            }
-
-            c = l;
-        }
-        if (threeml.nodeName.equalsIgnoreCase("combobox")) {
-            ComboBox l = new ComboBox();
-
-            //TODO: set the combobox's name
-
-            //add items to the combobox
-            int childCount = threeml.children.size();
-            for (int i = 0; i < childCount; i++) {
-                XmlNode item = (XmlNode) threeml.children.elementAt(i);
-                if (item.nodeName.equalsIgnoreCase("item")) {
-                    l.addItem((String) item.nodeValue);
-                }
-            }
-
-            c = l;
-        }
-        if (threeml.nodeName.equalsIgnoreCase("radiobutton")) {
-            RadioButton l = new RadioButton();
-
-            //TODO: set the radiobutton's name
-            //TODO: set the radiobutton's icon
-
-            //set the radiobutton's text
-            if (threeml.attributes.containsKey("text")) {
-                l.setText(threeml.getAttr("text"));
-            }
-
-            c = l;
-        }
-        if (threeml.nodeName.equalsIgnoreCase("borderlayout")) {
-            Container borderContainer = new Container();
-            BorderLayout b = new BorderLayout();
-
-            borderContainer.setLayout(b);
-
-            //TODO: set the borderlayout's center behaviour
-
-            int childCount = threeml.children.size();
-            for (int i = 0; i < childCount; i++) {
-                XmlNode child = (XmlNode) threeml.children.elementAt(i);
-                if (child.nodeName.equalsIgnoreCase("north")) {
-                    int count = child.children.size();
-                    for (int j = 0; j < count; j++) {
-                        Component childCo = interpret3ml((XmlNode) child.children.elementAt(j));
-                        borderContainer.addComponent(BorderLayout.NORTH, childCo);
-                    }
-                }
-                if (child.nodeName.equalsIgnoreCase("east")) {
-                    int count = child.children.size();
-                    for (int j = 0; j < count; j++) {
-                        Component childCo = interpret3ml((XmlNode) child.children.elementAt(j));
-                        borderContainer.addComponent(BorderLayout.EAST, childCo);
-                    }
-                }
-                if (child.nodeName.equalsIgnoreCase("west")) {
-                    int count = child.children.size();
-                    for (int j = 0; j < count; j++) {
-                        Component childCo = interpret3ml((XmlNode) child.children.elementAt(j));
-                        borderContainer.addComponent(BorderLayout.WEST, childCo);
-                    }
-                }
-                if (child.nodeName.equalsIgnoreCase("south")) {
-                    int count = child.children.size();
-                    for (int j = 0; j < count; j++) {
-                        Component childCo = interpret3ml((XmlNode) child.children.elementAt(j));
-                        borderContainer.addComponent(BorderLayout.SOUTH, childCo);
-                    }
-                }
-                if (child.nodeName.equalsIgnoreCase("center")) {
-                    int count = child.children.size();
-                    for (int j = 0; j < count; j++) {
-                        Component childCo = interpret3ml((XmlNode) child.children.elementAt(j));
-                        borderContainer.addComponent(BorderLayout.CENTER, childCo);
-                    }
-                }
-            }
-
-            c = borderContainer;
-        }
-        if (threeml.nodeName.equalsIgnoreCase("boxlayout")) {
-            Container boxContainer = new Container();
-            BoxLayout b = new BoxLayout(BoxLayout.Y_AXIS);
-
-            boxContainer.setLayout(b);
-
-            //set the boxlayout's orientation
-            if(threeml.attributes.containsKey("align")){
-                String orient=threeml.getAttr("align");
-                if(orient.equalsIgnoreCase("x-axis")){
-                    boxContainer.setLayout(new BoxLayout(BoxLayout.X_AXIS));
-                }
-            }
-
-            int childCount = threeml.children.size();
-            for (int i = 0; i < childCount; i++) {
-                XmlNode child = (XmlNode) threeml.children.elementAt(i);
-                boxContainer.addComponent(interpret3ml((XmlNode) child));
-            }
-
-            c = boxContainer;
-        }
-        if (threeml.nodeName.equalsIgnoreCase("flowlayout")) {
-            Container flowContainer = new Container();
-            FlowLayout f = new FlowLayout();
-
-            flowContainer.setLayout(f);
-
-            //TODO: set the flowlayout's orientation
-
-            int childCount = threeml.children.size();
-            for (int i = 0; i < childCount; i++) {
-                XmlNode child = (XmlNode) threeml.children.elementAt(i);
-                flowContainer.addComponent(interpret3ml((XmlNode) child));
-            }
-
-            c = flowContainer;
-        }
         return c;
+    }
+
+    public void processHead(XmlNode child) {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 }

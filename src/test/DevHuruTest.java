@@ -82,7 +82,8 @@ public class DevHuruTest {
 //            ok("Test Build BoxLayout With Y Axis",testBuildBoxLayoutWithYAxis());
 //            ok("Test Build BoxLayout With X Axis",testBuildBoxLayoutWithXAxis());
 //            ok("Test Build FlowLayout",testBuildFlowLayout());
-            testUI();
+            //testUI();
+            testUIWithBodyTag();
         } catch (Exception e) {
             midlet.handleException(e);
         }
@@ -94,6 +95,17 @@ public class DevHuruTest {
     
     private void testUI() throws XmlPullParserException, IOException{
         String actualthreeml = "<?xml version=\"1.0\" encoding=\"utf-8\"?><threeml><borderlayout><north><label text=\"Summer dont know me no more\"/></north><south><button text=\"Gorillaz\"/></south></borderlayout></threeml>";
+        ByteArrayInputStream bais = new ByteArrayInputStream(actualthreeml.getBytes());
+        SimpleParser simpleParser = new SimpleParser(bais);
+        XmlNode actual3ml = simpleParser.readXML(new KXmlParser());
+        System.out.println(actual3ml.toString());
+        Container c=(Container)midlet.interpret3ml(actual3ml);
+        System.out.println(getContainerString(c));
+        midlet.showUI(c);
+    }
+    
+    private void testUIWithBodyTag() throws XmlPullParserException, IOException{
+        String actualthreeml = "<?xml version=\"1.0\" encoding=\"utf-8\"?><threeml><body><borderlayout><north><label text=\"Summer dont know me no more\"/></north><south><button text=\"Gorillaz\"/></south></borderlayout></body></threeml>";
         ByteArrayInputStream bais = new ByteArrayInputStream(actualthreeml.getBytes());
         SimpleParser simpleParser = new SimpleParser(bais);
         XmlNode actual3ml = simpleParser.readXML(new KXmlParser());
