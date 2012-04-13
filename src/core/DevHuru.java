@@ -22,12 +22,14 @@ import com.sun.lwuit.ComboBox;
 import com.sun.lwuit.Component;
 import com.sun.lwuit.Container;
 import com.sun.lwuit.Display;
+import com.sun.lwuit.Form;
 import com.sun.lwuit.Label;
 import com.sun.lwuit.RadioButton;
 import com.sun.lwuit.TextArea;
 import com.sun.lwuit.TextField;
 import com.sun.lwuit.layouts.BorderLayout;
 import com.sun.lwuit.layouts.BoxLayout;
+import com.sun.lwuit.layouts.FlowLayout;
 import xml.XmlNode;
 import xml.SimpleParser;
 import java.io.DataOutputStream;
@@ -48,9 +50,12 @@ import test.DevHuruTest;
  *
  */
 public class DevHuru extends MIDlet {
+    
+    public Form frmResult;
 
     public DevHuru() {
         Display.init(this);
+        frmResult=new Form("Result");
         DevHuruTest devHuruTestor = new DevHuruTest(this);
     }
 
@@ -134,16 +139,22 @@ public class DevHuru extends MIDlet {
     public void handleException(Exception e) {
         e.printStackTrace();
     }
+    
+    public void showUI(Component c){
+        frmResult.setLayout(new BorderLayout());
+        frmResult.getContentPane().addComponent(BorderLayout.CENTER,c);
+        frmResult.show();
+    }
 
     public Component interpret3ml(XmlNode threeml) {
         Component c = null;
         if (threeml.nodeName.equalsIgnoreCase("threeml")) {
             //by default the whole UI is in a parent Container
-            Container root = new Container();
+            Container root = new Container(new BorderLayout());
             //iterate through the children and add their UI to the Container
             int childCount = threeml.children.size();
             for (int i = 0; i < childCount; i++) {
-                root.addComponent(interpret3ml((XmlNode) threeml.children.elementAt(i)));
+                root.addComponent(BorderLayout.CENTER,interpret3ml((XmlNode) threeml.children.elementAt(i)));
             }
             c = root;
         }
@@ -258,35 +269,35 @@ public class DevHuru extends MIDlet {
                 if (child.nodeName.equalsIgnoreCase("north")) {
                     int count = child.children.size();
                     for (int j = 0; j < count; j++) {
-                        Component childCo = interpret3ml((XmlNode) child.children.elementAt(i));
+                        Component childCo = interpret3ml((XmlNode) child.children.elementAt(j));
                         borderContainer.addComponent(BorderLayout.NORTH, childCo);
                     }
                 }
                 if (child.nodeName.equalsIgnoreCase("east")) {
                     int count = child.children.size();
                     for (int j = 0; j < count; j++) {
-                        Component childCo = interpret3ml((XmlNode) child.children.elementAt(i));
+                        Component childCo = interpret3ml((XmlNode) child.children.elementAt(j));
                         borderContainer.addComponent(BorderLayout.EAST, childCo);
                     }
                 }
                 if (child.nodeName.equalsIgnoreCase("west")) {
                     int count = child.children.size();
                     for (int j = 0; j < count; j++) {
-                        Component childCo = interpret3ml((XmlNode) child.children.elementAt(i));
+                        Component childCo = interpret3ml((XmlNode) child.children.elementAt(j));
                         borderContainer.addComponent(BorderLayout.WEST, childCo);
                     }
                 }
                 if (child.nodeName.equalsIgnoreCase("south")) {
                     int count = child.children.size();
                     for (int j = 0; j < count; j++) {
-                        Component childCo = interpret3ml((XmlNode) child.children.elementAt(i));
+                        Component childCo = interpret3ml((XmlNode) child.children.elementAt(j));
                         borderContainer.addComponent(BorderLayout.SOUTH, childCo);
                     }
                 }
                 if (child.nodeName.equalsIgnoreCase("center")) {
                     int count = child.children.size();
                     for (int j = 0; j < count; j++) {
-                        Component childCo = interpret3ml((XmlNode) child.children.elementAt(i));
+                        Component childCo = interpret3ml((XmlNode) child.children.elementAt(j));
                         borderContainer.addComponent(BorderLayout.CENTER, childCo);
                     }
                 }
@@ -300,7 +311,13 @@ public class DevHuru extends MIDlet {
 
             boxContainer.setLayout(b);
 
-            //TODO: set the boxlayout's orientation
+            //set the boxlayout's orientation
+            if(threeml.attributes.containsKey("align")){
+                String orient=threeml.getAttr("align");
+                if(orient.equalsIgnoreCase("x-axis")){
+                    boxContainer.setLayout(new BoxLayout(BoxLayout.X_AXIS));
+                }
+            }
 
             int childCount = threeml.children.size();
             for (int i = 0; i < childCount; i++) {
@@ -309,6 +326,22 @@ public class DevHuru extends MIDlet {
             }
 
             c = boxContainer;
+        }
+        if (threeml.nodeName.equalsIgnoreCase("flowlayout")) {
+            Container flowContainer = new Container();
+            FlowLayout f = new FlowLayout();
+
+            flowContainer.setLayout(f);
+
+            //TODO: set the flowlayout's orientation
+
+            int childCount = threeml.children.size();
+            for (int i = 0; i < childCount; i++) {
+                XmlNode child = (XmlNode) threeml.children.elementAt(i);
+                flowContainer.addComponent(interpret3ml((XmlNode) child));
+            }
+
+            c = flowContainer;
         }
         return c;
     }
